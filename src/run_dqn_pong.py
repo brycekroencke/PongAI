@@ -88,10 +88,13 @@ for frame_idx in range(1, num_frames + 1):
         print('#Frame: %d, preparing replay buffer' % frame_idx)
 
     if frame_idx % 10000 == 0 and len(replay_buffer) > replay_initial:
-        torch.save(model.state_dict(), get_nonexistant_path("model.pth"))
         print('#Frame: %d, Loss: %f' % (frame_idx, np.mean(losses, 0)[1]))
         print('Last-10 average reward: %f' % np.mean(all_rewards[-10:], 0)[1])
 
     if frame_idx % 50000 == 0:
         # torch.save(model.state_dict(), get_nonexistant_path("model.pth"))
         target_model.copy_from(model)
+
+    if frame_idx % 100000 == 0:
+        print("SAVING MODEL")
+        torch.save(model.state_dict(), get_nonexistant_path("model.pth"))
