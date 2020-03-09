@@ -10,6 +10,9 @@ import torch.optim as optim
 import torch.autograd as autograd
 import torch.nn.functional as F
 import os
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
 USE_CUDA = torch.cuda.is_available()
 from dqn import QLearner, compute_td_loss, ReplayBuffer
 
@@ -45,7 +48,7 @@ model.load_state_dict(torch.load("model_pretrained.pth", map_location='cpu'))
 target_model = QLearner(env, num_frames, batch_size, gamma, replay_buffer)
 target_model.copy_from(model)
 
-optimizer = optim.Adam(model.parameters(), lr=0.001)
+optimizer = optim.Adam(model.parameters(), lr=0.0001)
 if USE_CUDA:
     model = model.cuda()
     target_model = target_model.cuda()
@@ -91,10 +94,21 @@ for frame_idx in range(1, num_frames + 1):
         print('#Frame: %d, Loss: %f' % (frame_idx, np.mean(losses, 0)[1]))
         print('Last-10 average reward: %f' % np.mean(all_rewards[-10:], 0)[1])
 
+
+
     if frame_idx % 50000 == 0:
         # torch.save(model.state_dict(), get_nonexistant_path("model.pth"))
         target_model.copy_from(model)
 
     if frame_idx % 100000 == 0:
-        print("SAVING MODEL")
+        print("SAVING MODEL AND PLOTS")
         torch.save(model.state_dict(), get_nonexistant_path("model.pth"))
+        plt.plot(losses)
+        plt.ylabel('loss')
+        plt.savefig(get_nonexistant_path("loss_plot"))
+        plt.clf()
+
+        plt.plot(all_rewards)
+        plt.ylabel('reward')
+        plt.savefig(get_nonexistant_path("reward_plot"))
+        plt.clf()
