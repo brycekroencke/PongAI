@@ -45,7 +45,7 @@ model.load_state_dict(torch.load("model_pretrained.pth", map_location='cpu'))
 target_model = QLearner(env, num_frames, batch_size, gamma, replay_buffer)
 target_model.copy_from(model)
 
-optimizer = optim.Adam(model.parameters(), lr=0.00001)
+optimizer = optim.Adam(model.parameters(), lr=0.001)
 if USE_CUDA:
     model = model.cuda()
     target_model = target_model.cuda()
