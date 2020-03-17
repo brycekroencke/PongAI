@@ -83,7 +83,7 @@ def compute_td_loss(model, target_model, batch_size, gamma, replay_buffer):
     next_q_value = next_q_values.max(1)[0]
     expected_q_value = reward + gamma * next_q_value * (1 - done)
 
-    loss = (q_value - Variable(expected_q_value.data, requires_grad = True)).pow(2).mean()
+    loss = (q_value - Variable(expected_q_value, requires_grad = True)).pow(2).mean()
 
     # print(loss)
 
