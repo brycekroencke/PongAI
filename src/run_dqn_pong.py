@@ -94,6 +94,33 @@ for frame_idx in range(1, num_frames + 1):
         print('#Frame: %d, Loss: %f' % (frame_idx, np.mean(losses, 0)[1]))
         print('Last-10 average reward: %f' % np.mean(all_rewards[-10:], 0)[1])
 
+        r_plot_f = []
+        r_plot_r = []
+        l_plot_f = []
+        l_plot_l = []
+        for i in all_rewards:
+            r_plot_f.append(i[0])
+            r_plot_r.append(i[1])
+        for i in losses:
+            l_plot_f.append(i[0])
+            l_plot_l.append(i[1])
+
+        print(r_plot_f)
+        print(r_plot_r)
+
+        print(l_plot_f)
+        print(l_plot_l)
+
+        plt.plot(l_plot_f, l_plot_l)
+        plt.ylabel('loss')
+        plt.savefig(get_nonexistant_path("loss_plot"))
+        plt.clf()
+
+        plt.plot(r_plot_f, r_plot_r)
+        plt.ylabel('reward')
+        plt.savefig(get_nonexistant_path("reward_plot"))
+        plt.clf()
+
 
 
     if frame_idx % 50000 == 0:
@@ -103,12 +130,12 @@ for frame_idx in range(1, num_frames + 1):
     if frame_idx % 100000 == 0:
         print("SAVING MODEL AND PLOTS")
         torch.save(model.state_dict(), get_nonexistant_path("model.pth"))
-        plt.plot(losses)
-        plt.ylabel('loss')
-        plt.savefig(get_nonexistant_path("loss_plot"))
-        plt.clf()
-
-        plt.plot(all_rewards)
-        plt.ylabel('reward')
-        plt.savefig(get_nonexistant_path("reward_plot"))
-        plt.clf()
+        # plt.plot(losses[:][0], losses[:][1])
+        # plt.ylabel('loss')
+        # plt.savefig(get_nonexistant_path("loss_plot"))
+        # plt.clf()
+        #
+        # plt.plot(all_rewards[:][0], all_rewards[:][1])
+        # plt.ylabel('reward')
+        # plt.savefig(get_nonexistant_path("reward_plot"))
+        # plt.clf()
