@@ -94,6 +94,17 @@ for frame_idx in range(1, num_frames + 1):
         print('#Frame: %d, Loss: %f' % (frame_idx, np.mean(losses, 0)[1]))
         print('Last-10 average reward: %f' % np.mean(all_rewards[-10:], 0)[1])
 
+
+
+
+    if frame_idx % 50000 == 0:
+        # torch.save(model.state_dict(), get_nonexistant_path("model.pth"))
+        target_model.copy_from(model)
+
+    if frame_idx % 100000 == 0:
+        print("SAVING MODEL AND PLOTS")
+        torch.save(model.state_dict(), get_nonexistant_path("model.pth"))
+
         r_plot_f = []
         r_plot_r = []
         l_plot_f = []
@@ -105,12 +116,6 @@ for frame_idx in range(1, num_frames + 1):
             l_plot_f.append(i[0])
             l_plot_l.append(i[1])
 
-        print(r_plot_f)
-        print(r_plot_r)
-
-        print(l_plot_f)
-        print(l_plot_l)
-
         plt.plot(l_plot_f, l_plot_l)
         plt.ylabel('loss')
         plt.savefig(get_nonexistant_path("loss_plot"))
@@ -120,16 +125,6 @@ for frame_idx in range(1, num_frames + 1):
         plt.ylabel('reward')
         plt.savefig(get_nonexistant_path("reward_plot"))
         plt.clf()
-
-
-
-    if frame_idx % 50000 == 0:
-        # torch.save(model.state_dict(), get_nonexistant_path("model.pth"))
-        target_model.copy_from(model)
-
-    if frame_idx % 100000 == 0:
-        print("SAVING MODEL AND PLOTS")
-        torch.save(model.state_dict(), get_nonexistant_path("model.pth"))
         # plt.plot(losses[:][0], losses[:][1])
         # plt.ylabel('loss')
         # plt.savefig(get_nonexistant_path("loss_plot"))
