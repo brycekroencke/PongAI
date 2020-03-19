@@ -53,8 +53,10 @@ class QLearner(nn.Module):
 
             # print(self.env.unwrapped.get_action_meanings())
             # action = np.argmax(np.array(self.forward(state).data))
-            q_value = self.forward(state)
-            action  = q_value.max(1)[1].data[0]
+            # q_value = self.forward(state)
+            # action  = q_value.max(1)[1].data[0]
+
+            action = torch.argmax(self(state)).item()
 
             # print(np.array(self.forward(state).data)[0][action])
             # print(action)
@@ -71,7 +73,7 @@ def compute_td_loss(model, target_model, batch_size, gamma, replay_buffer):
     state, action, reward, next_state, done = replay_buffer.sample(batch_size)
 
     state = Variable(torch.FloatTensor(np.float32(state)))
-    next_state = Variable(torch.FloatTensor(np.float32(next_state))) #.squeeze(1), requires_grad=True)
+    next_state = Variable(torch.FloatTensor(np.float32(next_state)), requires_grad=True)
     action = Variable(torch.LongTensor(action))
     reward = Variable(torch.FloatTensor(reward))
     done = Variable(torch.FloatTensor(done))

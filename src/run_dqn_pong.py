@@ -125,12 +125,3 @@ for frame_idx in range(1, num_frames + 1):
         plt.ylabel('reward')
         plt.savefig(get_nonexistant_path("reward_plot"))
         plt.clf()
-        # plt.plot(losses[:][0], losses[:][1])
-        # plt.ylabel('loss')
-        # plt.savefig(get_nonexistant_path("loss_plot"))
-        # plt.clf()
-        #
-        # plt.plot(all_rewards[:][0], all_rewards[:][1])
-        # plt.ylabel('reward')
-        # plt.savefig(get_nonexistant_path("reward_plot"))
-        # plt.clf()
